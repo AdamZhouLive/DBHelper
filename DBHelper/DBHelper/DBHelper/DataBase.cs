@@ -19,7 +19,6 @@ namespace DBHelper
         private string databasefile;
         private string databasetype;
         private DataBaseAccess databaseaccess;
-        private UserInfo userinfo;
         #endregion
 
         #region 属性
@@ -96,21 +95,6 @@ namespace DBHelper
             }
             set { this.databaseaccess = value; }
           
-        }
-        #endregion
-
-        #region DBHelper.UserInfo UserInfo 数据库用户信息
-        /// <summary>
-        /// 数据库用户信息
-        /// </summary>
-        public DBHelper.UserInfo UserInfo
-        {
-            get
-            {
-                return this.userinfo;
-            }
-            set { this.userinfo = value; }
-
         }
         #endregion
 
@@ -253,24 +237,7 @@ namespace DBHelper
                 //    break;
             }
         }
-        #endregion 
-
-        #region private Dictionary<string, string> CreateParameters() 更加数据库相关信息创建参数
-        /// <summary>
-        /// 更加数据库相关信息创建参数
-        /// </summary>
-        /// <returns>参数</returns>
-        private Dictionary<string, string> CreateParameters()
-        {
-            Dictionary<string, string> Parameters = new Dictionary<string, string>();
-            Parameters.Add("@userno", this.UserInfo.UserNo);
-            Parameters.Add("@username", this.UserInfo.UserName);
-            Parameters.Add("@userpwd", this.UserInfo.UserPwd);
-            Parameters.Add("@dateymd", this.DateYMD);
-            Parameters.Add("@timehms", this.TimeHMS);
-            return Parameters;
-        } 
-        #endregion
+        #endregion     
 
         #region private DateTime GetDateTime() 获取数据库当前日期时间
         /// <summary>
@@ -279,13 +246,7 @@ namespace DBHelper
         /// <returns>日期时间</returns>
         private DateTime GetDateTime()
         {
-            DateTime dt = new DateTime();
-            IDataReader dr = this.DataBaseAccess.GetDataTableReader("select getdate() ");
-            if (dr.Read())
-            {
-                dt = Convert.ToDateTime(dr[0]);
-            }
-            return dt;
+            return this.DataBaseAccess.GetDateTime("select getdate()");
         } 
         #endregion
 
@@ -302,9 +263,7 @@ namespace DBHelper
         /// <returns>DataTable</returns>
         public DataTable GetDataTable(string sql)
         {
-            Dictionary<string, string> Parameters = this.CreateParameters();
-
-            return this.DataBaseAccess.GetDataTable(sql, Parameters);
+            return this.DataBaseAccess.GetDataTable(sql);
         }
 
         /// <summary>
@@ -313,15 +272,10 @@ namespace DBHelper
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
         /// <returns>DataTable</returns>
-        public DataTable GetDataTable(string sql, Dictionary<string, string> Parameters)
+        public DataTable GetDataTable(string sql, Dictionary<string, object> Parameters)
         {
-            Dictionary<string, string> Parameters2 = this.CreateParameters();
-            foreach (string key in Parameters.Keys)
-            {
-                Parameters2.Add(key, Parameters[key]);
-            }
 
-            return this.DataBaseAccess.GetDataTable(sql, Parameters2);
+            return this.DataBaseAccess.GetDataTable(sql, Parameters);
         }
         #endregion 
 
