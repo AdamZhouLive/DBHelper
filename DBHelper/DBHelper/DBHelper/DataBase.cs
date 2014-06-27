@@ -217,39 +217,34 @@ namespace DBHelper
                         this.databaseaccess = new SqlServer(this.ConnectionText);
                     }
                     break;
-                //case "access":
-                //    connectionText = "provider=microsoft.jet.oledb.4.0;data source='" + databasefile + "'";
-                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
-                //    {
-                //        this.connection = new System.Data.OleDb.OleDbConnection(this.ConnectionText);
-                //        this.dataadapter = new System.Data.OleDb.OleDbDataAdapter();
-                //    }
-                //    break;
-                //case "mysql":
-                //    connectionText = "server=" + server + @";database=" + database + @";uid=" + userid + @";pwd=" + password + ";";
-                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
-                //    {
-                //        this.connection = new MySql.Data.MySqlClient.MySqlConnection(this.ConnectionText);
-                //        this.dataadapter = new MySql.Data.MySqlClient.MySqlDataAdapter();
-                //    }
-                //    break;
-                //case "excel":
-                //    connectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
-                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
-                //    {
-                //        this.connection = new System.Data.OleDb.OleDbConnection(this.ConnectionText);
-                //        this.dataadapter = new System.Data.OleDb.OleDbDataAdapter();
-                      
-                //    }
-                //    break;
-                //case "oracle":
-                //    connectionText = "Driver={Microsoft ODBC for Oracle};Server="+server+";Uid="+userid+";Pwd="+password+";";
-                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
-                //    {
-                //        this.connection = new System.Data.Odbc.OdbcConnection(this.ConnectionText);
-                //        this.dataadapter = new System.Data.Odbc.OdbcDataAdapter();
-                //    }
-                //    break;
+                case "access":
+                    connectionText = "provider=microsoft.jet.oledb.4.0;data source='" + databasefile + "'";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    {
+                        this.databaseaccess = new Access(this.ConnectionText);
+                    }
+                    break;
+                case "mysql":
+                    connectionText = "server=" + server + @";database=" + databasename + @";uid=" + userid + @";pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    {
+                        this.databaseaccess =new MySQL(this.ConnectionText);
+                    }
+                    break;
+                case "excel":
+                    connectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    {
+                        this.databaseaccess = new Excel(this.ConnectionText);
+                    }
+                    break;
+                case "oracle":
+                    connectionText = "Driver={Microsoft ODBC for Oracle};Server=" + server + ";Uid=" + userid + ";Pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    {
+                        this.databaseaccess = new Oracle(this.ConnectionText);
+                    }
+                    break;
             }
         }
         #endregion     
@@ -268,6 +263,33 @@ namespace DBHelper
         #endregion
 
         #region 公开方法
+
+        #region 离线数据库连接器方法
+
+        #region GetScalar
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual object GetScalar(string sql)
+        {
+            return this.databaseaccess.GetScalar(sql);
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual object GetScalar(string sql, Dictionary<string, object> Parameters)
+        {
+            return this.databaseaccess.GetScalar(sql, Parameters);
+        }
+
+        #endregion
 
         #region GetDataTable
 
@@ -293,7 +315,7 @@ namespace DBHelper
             return this.databaseaccess.GetDataTable(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetDataTableReader
 
@@ -319,7 +341,7 @@ namespace DBHelper
             return this.databaseaccess.GetDataTableReader(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetString
 
@@ -345,7 +367,7 @@ namespace DBHelper
             return this.databaseaccess.GetString(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetInt16
 
@@ -371,7 +393,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt16(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetInt32
 
@@ -397,7 +419,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt32(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetInt64
 
@@ -423,7 +445,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt64(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetBool
 
@@ -449,8 +471,8 @@ namespace DBHelper
             return this.databaseaccess.GetBool(sql, Parameters);
         }
 
-        #endregion 
-       
+        #endregion
+
         #region GetDecimal
 
         /// <summary>
@@ -475,7 +497,7 @@ namespace DBHelper
             return this.databaseaccess.GetDecimal(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetDouble
 
@@ -501,7 +523,7 @@ namespace DBHelper
             return this.databaseaccess.GetDouble(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetFloat
 
@@ -527,7 +549,7 @@ namespace DBHelper
             return this.databaseaccess.GetFloat(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetChar
 
@@ -553,7 +575,7 @@ namespace DBHelper
             return this.databaseaccess.GetChar(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
         #region GetDateTime
 
@@ -579,22 +601,177 @@ namespace DBHelper
             return this.databaseaccess.GetDateTime(sql, Parameters);
         }
 
-        #endregion 
+        #endregion
 
-        #region ExecuteProcedure
+        #region ExecuteNonQueryOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行SQL并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public int ExecuteNonQueryOffline(string sql)
+        {
+            return this.databaseaccess.ExecuteNonQueryOffline(sql);
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行SQL并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public int ExecuteNonQueryOffline(string sql, Dictionary<string, object> Parameters)
+        {
+            return this.databaseaccess.ExecuteNonQueryOffline(sql, Parameters);
+        }
+
+        #endregion
+
+        #region ExecuteProcedureOffline
 
         /// <summary>
         /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程名称</param>
         /// <returns>输出参数</returns>
-        public Dictionary<string,object> ExecuteProcedure(string ProcedureName)
+        public Dictionary<string, object> ExecuteProcedureOffline(string ProcedureName)
+        {
+            return this.databaseaccess.ExecuteProcedureOffline(ProcedureName);
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程</param>
+        /// <returns>DataTable</returns>
+        public DataTable ExecuteProcedureOfflineToDataTable(string ProcedureName)
+        {
+
+            return this.databaseaccess.ExecuteProcedureOfflineToDataTable(ProcedureName);
+        }
+
+        #endregion
+
+        #region AddProcedureParameterOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，添加存储过程参数
+        /// </summary>
+        /// <param name="ParameterName">参数名</param>
+        /// <param name="ParameterValue">参数值</param>
+        /// <param name="DbType">对象类型</param>
+        /// <param name="Direction">参数类型</param>
+        public void AddProcedureParameterOffline(string ParameterName, object ParameterValue, System.Data.DbType DbType, System.Data.ParameterDirection Direction)
+        {
+            this.databaseaccess.AddProcedureParameterOffline(ParameterName, ParameterValue, DbType, Direction);
+        }
+
+        #endregion
+
+        #region ProcedureParameterInitializeOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，初始化存储过程参数
+        /// </summary>
+        public void ProcedureParameterInitializeOffline()
+        {
+            this.databaseaccess.ProcedureParameterInitializeOffline();
+        }
+
+        #endregion 
+
+        #endregion
+
+        #region 在线数据库连接器方法
+
+        #region ExecuteScalar
+
+        /// <summary>
+        /// 获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public object ExecuteScalar(string sql)
+        {
+
+            return this.databaseaccess.ExecuteScalar(sql);
+        }
+
+        /// <summary>
+        /// 获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public object ExecuteScalar(string sql, Dictionary<string, object> Parameters)
+        {
+            return this.databaseaccess.ExecuteScalar(sql, Parameters);
+        }
+
+        #endregion
+
+        #region ExecuteReader
+
+        /// <summary>
+        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public void ExecuteReader(string sql)
+        {
+            this.databaseaccess.ExecuteReader(sql);
+        }
+
+        /// <summary>
+        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public void ExecuteReader(string sql, Dictionary<string, object> Parameters)
+        {
+            this.databaseaccess.ExecuteReader(sql, Parameters);
+        }
+
+        #endregion
+
+        #region ExecuteNonQuery
+
+        /// <summary>
+        /// 执行SQL并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public int ExecuteNonQuery(string sql)
+        {
+            return this.databaseaccess.ExecuteNonQuery(sql);
+        }
+
+        /// <summary>
+        /// 执行SQL并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters)
+        {
+            return this.databaseaccess.ExecuteNonQuery(sql, Parameters);
+        }
+
+        #endregion
+
+        #region ExecuteProcedure
+
+        /// <summary>
+        /// 执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程名称</param>
+        /// <returns>输出参数</returns>
+        public Dictionary<string, object> ExecuteProcedure(string ProcedureName)
         {
             return this.databaseaccess.ExecuteProcedure(ProcedureName);
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// 执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程</param>
         /// <returns>DataTable</returns>
@@ -604,7 +781,7 @@ namespace DBHelper
             return this.databaseaccess.ExecuteProcedureToDataTable(ProcedureName);
         }
 
-        #endregion 
+        #endregion
 
         #region AddProcedureParameter
 
@@ -633,54 +810,6 @@ namespace DBHelper
         }
 
         #endregion
-
-        #region ExecuteReader
-
-        /// <summary>
-        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public void ExecuteReader(string sql)
-        {
-            this.databaseaccess.ExecuteReader(sql);
-        }
-
-        /// <summary>
-        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public void ExecuteReader(string sql, Dictionary<string, object> Parameters)
-        {
-            this.databaseaccess.ExecuteReader(sql, Parameters);
-        }
-
-        #endregion 
-
-        #region ExecuteNonQuery
-
-        /// <summary>
-        /// 执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public int ExecuteNonQuery(string sql)
-        {
-            return this.databaseaccess.ExecuteNonQuery(sql);
-        }
-
-        /// <summary>
-        /// 执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters)
-        {
-            return this.databaseaccess.ExecuteNonQuery(sql, Parameters);
-        }
-
-        #endregion 
 
         #region BeginTransaction
 
@@ -739,6 +868,8 @@ namespace DBHelper
         {
             this.databaseaccess.Close();
         }
+
+        #endregion 
 
         #endregion
 

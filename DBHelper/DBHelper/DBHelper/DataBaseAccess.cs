@@ -185,108 +185,1000 @@ namespace DBHelper
 
         #region 使用离线连接器的方法
 
-        #region GetDataTable
-        public abstract DataTable GetDataTable(string sql);
+        #region GetScalar
 
-        public abstract DataTable GetDataTable(string sql, Dictionary<string, object> Parameters);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual object GetScalar(string sql)
+        {
+
+            object ret = new object();
+
+            try
+            {
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+
+                ret = this.CommandOffline.ExecuteScalar();
+            }
+            catch { throw; }
+            finally
+            {
+                this.ConnectionOffline.Close();
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual object GetScalar(string sql, Dictionary<string, object> Parameters)
+        {
+            object ret = new object();
+            try
+            {
+
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+                foreach (string key in Parameters.Keys)
+                {
+                    this.CommandOffline.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+                }
+
+                ret = this.CommandOffline.ExecuteScalar();
+            }
+            catch { throw; }
+            finally
+            {
+                this.ConnectionOffline.Close();
+            }
+            return ret;
+        }
+
+        #endregion
+
+        #region GetDataTable
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DataTable对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual DataTable GetDataTable(string sql)
+        {
+
+            DataTable dt = new DataTable();
+            DataSet ds = new DataSet();
+
+            try
+            {
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+
+                this.DataAdapterOffline.SelectCommand = this.CommandOffline;
+
+                this.DataAdapterOffline.Fill(ds);
+                dt = ds.Tables[0];
+            }
+            catch { throw; }
+            finally
+            {
+                ds.Dispose();
+                this.ConnectionOffline.Close();
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DataTable对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual DataTable GetDataTable(string sql, Dictionary<string, object> Parameters)
+        {
+            DataTable dt = new DataTable();
+            DataSet ds = new DataSet();
+            try
+            {
+
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+                foreach (string key in Parameters.Keys)
+                {
+                    this.CommandOffline.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+                }
+
+                this.DataAdapterOffline.SelectCommand = this.CommandOffline;
+
+                this.DataAdapterOffline.Fill(ds);
+                dt = ds.Tables[0];
+            }
+            catch { throw; }
+            finally
+            {
+                ds.Dispose();
+                this.ConnectionOffline.Close();
+            }
+            return dt;
+        }
 
         #endregion
 
         #region GetDataTableReader
 
-        public abstract IDataReader GetDataTableReader(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DataTableReader对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual IDataReader GetDataTableReader(string sql)
+        {
+            IDataReader dr = null;
 
-        public abstract IDataReader GetDataTableReader(string sql, Dictionary<string, object> Parameters);
+            dr = this.GetDataTable(sql).CreateDataReader();
+
+            return dr;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DataTableReader对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual IDataReader GetDataTableReader(string sql, Dictionary<string, object> Parameters)
+        {
+            IDataReader dr = null;
+
+            dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            return dr;
+        }
 
         #endregion
 
         #region GetString
 
-        public abstract string GetString(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取String对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual string GetString(string sql)
+        {
+            string ret = null;
 
-        public abstract string GetString(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = dr[0].ToString();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取String对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual string GetString(string sql, Dictionary<string, object> Parameters)
+        {
+            string ret = null;
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = dr[0].ToString();
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetInt16
 
-        public abstract Int16 GetInt16(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int16对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual Int16 GetInt16(string sql)
+        {
+            Int16 ret = new short();
 
-        public abstract Int16 GetInt16(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt16(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int16对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual Int16 GetInt16(string sql, Dictionary<string, object> Parameters)
+        {
+            Int16 ret = new short();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt16(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetInt32
 
-        public abstract Int32 GetInt32(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int32对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual Int32 GetInt32(string sql)
+        {
+            Int32 ret = new int();
 
-        public abstract Int32 GetInt32(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt32(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int32对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual Int32 GetInt32(string sql, Dictionary<string, object> Parameters)
+        {
+            Int32 ret = new int();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt32(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetInt64
 
-        public abstract Int64 GetInt64(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int64对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual Int64 GetInt64(string sql)
+        {
+            Int64 ret = new long();
 
-        public abstract Int64 GetInt64(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt64(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Int64对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual Int64 GetInt64(string sql, Dictionary<string, object> Parameters)
+        {
+            Int64 ret = new long();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToInt64(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetBool
 
-        public abstract bool GetBool(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Bool对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual bool GetBool(string sql)
+        {
+            bool ret = new bool();
 
-        public abstract bool GetBool(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToBoolean(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Bool对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual bool GetBool(string sql, Dictionary<string, object> Parameters)
+        {
+            bool ret = new bool();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToBoolean(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetDecimal
 
-        public abstract decimal GetDecimal(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Decimal对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual decimal GetDecimal(string sql)
+        {
+            decimal ret = new decimal();
 
-        public abstract decimal GetDecimal(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToDecimal(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Decimal对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual decimal GetDecimal(string sql, Dictionary<string, object> Parameters)
+        {
+            decimal ret = new decimal();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToDecimal(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetDouble
 
-        public abstract double GetDouble(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Double对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual double GetDouble(string sql)
+        {
+            double ret = new double();
 
-        public abstract double GetDouble(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToDouble(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Double对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual double GetDouble(string sql, Dictionary<string, object> Parameters)
+        {
+            double ret = new double();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToDouble(dr[0]);
+            }
+
+            return ret;
+        }
 
         #endregion
 
         #region GetFloat
 
-        public abstract float GetFloat(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Float对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual float GetFloat(string sql)
+        {
+            float ret = new float();
 
-        public abstract float GetFloat(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
 
-        #endregion 
+            if (dr.Read())
+            {
+                ret = (float)Convert.ToDouble(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        ///使用离线数据库连接器，无需使用Open方法， 获取Float对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual float GetFloat(string sql, Dictionary<string, object> Parameters)
+        {
+            float ret = new float();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = (float)Convert.ToDouble(dr[0]);
+            }
+
+            return ret;
+        }
+
+        #endregion
 
         #region GetChar
 
-        public abstract char GetChar(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Char对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual char GetChar(string sql)
+        {
+            char ret = new char();
 
-        public abstract char GetChar(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
 
-        #endregion 
+            if (dr.Read())
+            {
+                ret = Convert.ToChar(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取Char对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual char GetChar(string sql, Dictionary<string, object> Parameters)
+        {
+            char ret = new char();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToChar(dr[0]);
+            }
+
+            return ret;
+        }
+
+        #endregion
 
         #region GetDateTime
 
-        public abstract DateTime  GetDateTime(string sql);
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DateTime对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual DateTime GetDateTime(string sql)
+        {
+            DateTime ret = new DateTime();
 
-        public abstract DateTime GetDateTime(string sql, Dictionary<string, object> Parameters);
+            IDataReader dr = this.GetDataTable(sql).CreateDataReader();
 
-        #endregion 
+            if (dr.Read())
+            {
+                ret = Convert.ToDateTime(dr[0]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取DateTime对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual DateTime GetDateTime(string sql, Dictionary<string, object> Parameters)
+        {
+            DateTime ret = new DateTime();
+
+            IDataReader dr = this.GetDataTable(sql, Parameters).CreateDataReader();
+
+            if (dr.Read())
+            {
+                ret = Convert.ToDateTime(dr[0]);
+            }
+
+            return ret;
+        }
+
+        #endregion
+
+        #region ExecuteProcedureOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        public virtual Dictionary<string, object> ExecuteProcedureOffline(string ProcedureName)
+        {
+            Dictionary<string, object> ret = new Dictionary<string, object>();
+            int NORA = 0;
+            ret.Add("IsSuccess", false);
+            ret.Add("NORA", NORA);
+
+            try
+            {
+                this.CommandOffline.CommandType = CommandType.StoredProcedure;
+
+                this.CommandOffline.CommandText = ProcedureName;
+
+                this.ConnectionOffline.Open();
+                NORA = this.CommandOffline.ExecuteNonQuery();
+                this.ConnectionOffline.Close();
+
+                if (NORA > 0)
+                {
+                    ret["IsSuccess"] = true;
+                    ret["NORA"] = NORA;
+                }
+
+                foreach (IDataParameter p in CommandOffline.Parameters)
+                {
+                    if (p.Direction == ParameterDirection.Output ||
+                        p.Direction == ParameterDirection.InputOutput ||
+                        p.Direction == ParameterDirection.ReturnValue)
+                    {
+                        ret.Add(p.ParameterName, p.Value);
+                    }
+                }
+
+            }
+            catch { throw; }
+            finally { this.ConnectionOffline.Close(); }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        public virtual DataTable ExecuteProcedureOfflineToDataTable(string ProcedureName)
+        {
+            DataTable ret = new DataTable();
+            DataSet ds = new DataSet();
+            try
+            {
+                this.CommandOffline.CommandType = CommandType.StoredProcedure;
+
+                this.CommandOffline.CommandText = ProcedureName;
+
+                this.ConnectionOffline.Open();
+                this.DataAdapterOffline.SelectCommand = this.CommandOffline;
+                this.DataAdapterOffline.Fill(ds);
+                ret = ds.Tables[0];
+                this.ConnectionOffline.Close();
+
+            }
+            catch { throw; }
+            finally { this.ConnectionOffline.Close(); }
+
+            return ret;
+        }
+
+        #endregion
+
+        #region ExecuteNonQueryOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行命令并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQueryOffline(string sql)
+        {
+
+            int ret = new int();
+            try
+            {
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+
+                ret = this.CommandOffline.ExecuteNonQuery();
+            }
+            catch { throw; }
+            finally
+            {
+                this.ConnectionOffline.Close();
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，执行命令并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQueryOffline(string sql, Dictionary<string, object> Parameters)
+        {
+            int ret = new int();
+            try
+            {
+
+                this.ConnectionOffline.Open();
+                this.CommandOffline.CommandType = CommandType.Text;
+                this.CommandOffline.CommandText = sql;
+                this.CommandOffline.Parameters.Clear();
+                foreach (string key in Parameters.Keys)
+                {
+                    this.CommandOffline.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+                }
+
+                ret = this.CommandOffline.ExecuteNonQuery();
+            }
+            catch { throw; }
+            finally
+            {
+                this.ConnectionOffline.Close();
+            }
+            return ret;
+        }
+
+        #endregion
+
+        #region AddProcedureParameterOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，添加存储过程参数
+        /// </summary>
+        /// <param name="ParameterName">参数名</param>
+        /// <param name="ParameterValue">参数值</param>
+        /// <param name="DbType">对象类型</param>
+        /// <param name="Direction">参数类型</param>
+        public void AddProcedureParameterOffline(string ParameterName, object ParameterValue, System.Data.DbType DbType, System.Data.ParameterDirection Direction)
+        {
+            System.Data.IDataParameter p = this.CommandOffline.CreateParameter();
+            p.ParameterName = ParameterName;
+            p.Value = ParameterValue;
+            p.DbType = DbType;
+            p.Direction = Direction;
+
+            this.CommandOffline.Parameters.Add(p);
+        }
+
+        #endregion
+
+        #region ProcedureParameterInitializeOffline
+
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，初始化存储过程参数
+        /// </summary>
+        public void ProcedureParameterInitializeOffline()
+        {
+            this.CommandOffline.Parameters.Clear();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region 使用在线连接器的方法
+
+        #region ExecuteScalar
+
+        /// <summary>
+        /// 获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual object ExecuteScalar(string sql)
+        {
+
+            object ret = new object();
+
+
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+
+            ret = this.Command.ExecuteScalar();
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 获取第一行第一列对象
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        /// <returns></returns>
+        public virtual object ExecuteScalar(string sql, Dictionary<string, object> Parameters)
+        {
+            object ret = new object();
+
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+            foreach (string key in Parameters.Keys)
+            {
+                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+            }
+
+            ret = this.Command.ExecuteScalar();
+
+            return ret;
+        }
+
+        #endregion
+
+        #region ExecuteReader
+
+        /// <summary>
+        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual void ExecuteReader(string sql)
+        {
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+
+            this.DataReader = this.Command.ExecuteReader();
+        }
+
+        /// <summary>
+        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public virtual void ExecuteReader(string sql, Dictionary<string, object> Parameters)
+        {
+
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+            foreach (string key in Parameters.Keys)
+            {
+                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+            }
+
+            this.DataReader = this.Command.ExecuteReader();
+        }
+
+        #endregion
+
+        #region ExecuteReaderSingleRow
+
+        /// <summary>
+        /// 使用在线连接器获取第一行的DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual void ExecuteReaderSingleRow(string sql)
+        {
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+
+            this.DataReader = this.Command.ExecuteReader(CommandBehavior.SingleRow);
+        }
+
+        /// <summary>
+        /// 使用在线连接器获取第一行的DataReader,使用完毕后记得用Close
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public virtual void ExecuteReaderSingleRow(string sql, Dictionary<string, object> Parameters)
+        {
+
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+            foreach (string key in Parameters.Keys)
+            {
+                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+            }
+
+            this.DataReader = this.Command.ExecuteReader(CommandBehavior.SingleRow);
+        }
+
+        #endregion
+
+        #region ExecuteNonQuery
+
+        /// <summary>
+        /// 执行命令并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <returns></returns>
+        public virtual int ExecuteNonQuery(string sql)
+        {
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+
+            return this.Command.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// 执行命令并返回影响行数
+        /// </summary>
+        /// <param name="sql">命令</param>
+        /// <param name="Parameters">参数</param>
+        public virtual int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters)
+        {
+            this.Command.CommandType = CommandType.Text;
+            this.Command.CommandText = sql;
+            this.Command.Parameters.Clear();
+            foreach (string key in Parameters.Keys)
+            {
+                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
+            }
+
+            return this.Command.ExecuteNonQuery();
+        }
+
+        #endregion
 
         #region ExecuteProcedure
 
-        public abstract Dictionary<string, object> ExecuteProcedure(string ProcedureName);
+        /// <summary>
+        /// 执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        public virtual Dictionary<string, object> ExecuteProcedure(string ProcedureName)
+        {
+            Dictionary<string, object> ret = new Dictionary<string, object>();
+            int NORA = 0;
+            ret.Add("IsSuccess", false);
+            ret.Add("NORA", NORA);
 
-        public abstract DataTable ExecuteProcedureToDataTable(string ProcedureName);
 
-        #endregion 
+            this.Command.CommandType = CommandType.StoredProcedure;
+
+            this.Command.CommandText = ProcedureName;
+
+            NORA = this.Command.ExecuteNonQuery();
+
+            if (NORA > 0)
+            {
+                ret["IsSuccess"] = true;
+                ret["NORA"] = NORA;
+            }
+
+            foreach (IDataParameter p in Command.Parameters)
+            {
+                if (p.Direction == ParameterDirection.Output ||
+                    p.Direction == ParameterDirection.InputOutput ||
+                    p.Direction == ParameterDirection.ReturnValue)
+                {
+                    ret.Add(p.ParameterName, p.Value);
+                }
+            }
+
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 执行存储过程
+        /// </summary>
+        /// <param name="ProcedureName">存储过程名称</param>
+        /// <returns></returns>
+        public virtual DataTable ExecuteProcedureToDataTable(string ProcedureName)
+        {
+            DataTable ret = new DataTable();
+            DataSet ds = new DataSet();
+
+            this.Command.CommandType = CommandType.StoredProcedure;
+
+            this.Command.CommandText = ProcedureName;
+
+            this.DataAdapter.SelectCommand = this.Command;
+            this.DataAdapter.Fill(ds);
+            ret = ds.Tables[0];
+
+
+            return ret;
+        }
+
+        #endregion
 
         #region AddProcedureParameter
 
@@ -299,15 +1191,15 @@ namespace DBHelper
         /// <param name="Direction">参数类型</param>
         public void AddProcedureParameter(string ParameterName, object ParameterValue, System.Data.DbType DbType, System.Data.ParameterDirection Direction)
         {
-            System.Data.IDataParameter p = this.CommandOffline.CreateParameter();
+            System.Data.IDataParameter p = this.Command.CreateParameter();
             p.ParameterName = ParameterName;
             p.Value = ParameterValue;
             p.DbType = DbType;
             p.Direction = Direction;
 
-            this.CommandOffline.Parameters.Add(p);
-        } 
-  
+            this.Command.Parameters.Add(p);
+        }
+
         #endregion
 
         #region ProcedureParameterInitialize
@@ -317,30 +1209,10 @@ namespace DBHelper
         /// </summary>
         public void ProcedureParameterInitialize()
         {
-            this.CommandOffline.Parameters.Clear();
+            this.Command.Parameters.Clear();
         }
 
         #endregion
-
-        #endregion
-
-        #region 使用在线连接器的方法
-
-        #region ExecuteReader
-
-        public abstract void ExecuteReader(string sql);
-
-        public abstract void ExecuteReader(string sql, Dictionary<string, object> Parameters);
-
-        #endregion 
-
-        #region ExecuteNonQuery
-
-        public abstract int ExecuteNonQuery(string sql);
-
-        public abstract int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters);
-
-        #endregion 
 
         #region BeginTransaction
 
