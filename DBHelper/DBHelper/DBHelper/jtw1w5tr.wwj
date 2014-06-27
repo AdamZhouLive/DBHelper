@@ -135,26 +135,6 @@ namespace DBHelper
         } 
         #endregion
 
-        #region IDbConnection Connection 数据库连接器
-        /// <summary>
-        /// 数据库连接器
-        /// </summary>
-        public IDbConnection Connection
-        {
-            get { return this.databaseaccess.Connection; }
-        } 
-        #endregion
-
-        #region IDataReader DataReader 在线DataReader
-        /// <summary>
-        /// 在线DataReader
-        /// </summary>
-        public IDataReader DataReader
-        {
-            get { return this.databaseaccess.DataReader; }
-        }
-        #endregion
-
         #endregion
 
         #region 构造函数
@@ -261,7 +241,7 @@ namespace DBHelper
         /// <returns>日期时间</returns>
         private DateTime GetDateTime()
         {
-            return this.databaseaccess.GetDateTime("select getdate()");
+            return this.DataBaseAccess.GetDateTime("select getdate()");
         } 
         #endregion
 
@@ -272,7 +252,7 @@ namespace DBHelper
         #region GetDataTable
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDataTable
+        /// GetDataTable
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns>DataTable</returns>
@@ -282,7 +262,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDataTable
+        /// GetDataTable
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -298,22 +278,22 @@ namespace DBHelper
         #region GetDataTableReader
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDataTableReader
+        /// GetDataTableReader
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
-        public IDataReader GetDataTableReader(string sql)
+        public IDataReader GetDataTable(string sql)
         {
             return this.databaseaccess.GetDataTableReader(sql);
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDataTableReader
+        /// GetDataTableReader
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
         /// <returns></returns>
-        public IDataReader GetDataTableReader(string sql, Dictionary<string, object> Parameters)
+        public IDataReader GetDataTable(string sql, Dictionary<string, object> Parameters)
         {
 
             return this.databaseaccess.GetDataTableReader(sql, Parameters);
@@ -324,7 +304,7 @@ namespace DBHelper
         #region GetString
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetString
+        /// GetString
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -334,7 +314,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetString
+        /// GetString
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -350,7 +330,7 @@ namespace DBHelper
         #region GetInt16
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt16
+        /// GetInt16
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -360,7 +340,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt16
+        /// GetInt16
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -376,7 +356,7 @@ namespace DBHelper
         #region GetInt32
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt32
+        /// GetInt32
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -386,7 +366,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt32
+        /// GetInt32
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -402,7 +382,7 @@ namespace DBHelper
         #region GetInt64
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt64
+        /// GetInt64
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -412,7 +392,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetInt64
+        /// GetInt64
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -428,7 +408,7 @@ namespace DBHelper
         #region GetBool
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetBool
+        /// GetBool
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -438,7 +418,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetBool
+        /// GetBool
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -454,7 +434,7 @@ namespace DBHelper
         #region GetDecimal
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDecimal
+        /// GetDecimal
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -464,7 +444,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDecimal
+        /// GetDecimal
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -480,7 +460,7 @@ namespace DBHelper
         #region GetDouble
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDouble
+        /// GetDouble
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -490,7 +470,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDouble
+        /// GetDouble
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -506,7 +486,7 @@ namespace DBHelper
         #region GetFloat
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetFloat
+        /// GetFloat
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -516,7 +496,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetFloat
+        /// GetFloat
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -532,7 +512,7 @@ namespace DBHelper
         #region GetChar
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetChar
+        /// GetChar
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -542,7 +522,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetFloat
+        /// GetFloat
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -558,7 +538,7 @@ namespace DBHelper
         #region GetDateTime
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDateTime
+        /// GetDateTime
         /// </summary>
         /// <param name="sql">sql</param>
         /// <returns></returns>
@@ -568,7 +548,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，GetDateTime
+        /// GetDateTime
         /// </summary>
         /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
@@ -584,163 +564,28 @@ namespace DBHelper
         #region ExecuteProcedure
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// ExecuteProcedure
         /// </summary>
-        /// <param name="ProcedureName">存储过程名称</param>
-        /// <returns>输出参数</returns>
-        public Dictionary<string,object> ExecuteProcedure(string ProcedureName)
+        /// <param name="sql">sql</param>
+        /// <returns></returns>
+        public DateTime ExecuteProcedure(string ProcedureName)
         {
             return this.databaseaccess.ExecuteProcedure(ProcedureName);
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// GetDateTime
         /// </summary>
-        /// <param name="ProcedureName">存储过程</param>
-        /// <returns>DataTable</returns>
-        public DataTable ExecuteProcedureToDataTable(string ProcedureName)
-        {
-
-            return this.databaseaccess.ExecuteProcedureToDataTable(ProcedureName);
-        }
-
-        #endregion 
-
-        #region AddProcedureParameter
-
-        /// <summary>
-        /// 添加存储过程参数
-        /// </summary>
-        /// <param name="ParameterName">参数名</param>
-        /// <param name="ParameterValue">参数值</param>
-        /// <param name="DbType">对象类型</param>
-        /// <param name="Direction">参数类型</param>
-        public void AddProcedureParameter(string ParameterName, object ParameterValue, System.Data.DbType DbType, System.Data.ParameterDirection Direction)
-        {
-            this.databaseaccess.AddProcedureParameter(ParameterName, ParameterValue, DbType, Direction);
-        }
-
-        #endregion
-
-        #region ProcedureParameterInitialize
-
-        /// <summary>
-        /// 初始化存储过程参数
-        /// </summary>
-        public void ProcedureParameterInitialize()
-        {
-            this.databaseaccess.ProcedureParameterInitialize();
-        }
-
-        #endregion
-
-        #region ExecuteReader
-
-        /// <summary>
-        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public void ExecuteReader(string sql)
-        {
-            this.databaseaccess.ExecuteReader(sql);
-        }
-
-        /// <summary>
-        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
-        /// </summary>
-        /// <param name="sql">命令</param>
+        /// <param name="sql">sql</param>
         /// <param name="Parameters">参数</param>
-        public void ExecuteReader(string sql, Dictionary<string, object> Parameters)
-        {
-            this.databaseaccess.ExecuteReader(sql, Parameters);
-        }
-
-        #endregion 
-
-        #region ExecuteNonQuery
-
-        /// <summary>
-        /// 执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
         /// <returns></returns>
-        public int ExecuteNonQuery(string sql)
+        public DateTime GetDateTime(string sql, Dictionary<string, object> Parameters)
         {
-            return this.databaseaccess.ExecuteNonQuery(sql);
-        }
 
-        /// <summary>
-        /// 执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters)
-        {
-            return this.databaseaccess.ExecuteNonQuery(sql, Parameters);
+            return this.databaseaccess.GetDateTime(sql, Parameters);
         }
 
         #endregion 
-
-        #region BeginTransaction
-
-        /// <summary>
-        /// 数据库开始事务
-        /// </summary>
-        public void BeginTransaction()
-        {
-            this.databaseaccess.BeginTransaction();
-        }
-
-        #endregion
-
-        #region Commit
-
-        /// <summary>
-        /// 提交数据库事务
-        /// </summary>
-        public void Commit()
-        {
-            this.databaseaccess.Commit();
-        }
-
-        #endregion
-
-        #region Rollback
-
-        /// <summary>
-        /// 回滚数据库事务
-        /// </summary>
-        public void Rollback()
-        {
-            this.databaseaccess.Rollback();
-        }
-
-        #endregion
-
-        #region Open
-
-        /// <summary>
-        /// 打开在线数据库连接
-        /// </summary>
-        public void Open()
-        {
-            this.databaseaccess.Open();
-        }
-
-        #endregion
-
-        #region Close
-
-        /// <summary>
-        /// 关闭在线数据库连接
-        /// </summary>
-        public void Close()
-        {
-            this.databaseaccess.Close();
-        }
-
-        #endregion
 
         #endregion
     }

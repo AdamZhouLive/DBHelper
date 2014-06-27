@@ -334,71 +334,12 @@ namespace DBHelper
 
         #endregion 
 
-        #region ExecuteNonQuery
+        #region AddProcedureParameter
 
-        public abstract int ExecuteNonQuery(string sql);
-
-        public abstract int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters);
-
-        #endregion 
-
-        #region BeginTransaction
-
-        /// <summary>
-        /// 数据库开始事务
-        /// </summary>
-        public void BeginTransaction()
+        public void AddProcedureParameter(string ParameterName, object ParameterValue, System.Data.DbType DbType, System.Data.ParameterDirection Direction)
         {
             this.Transaction = this.connection.BeginTransaction();
             this.Command.Transaction = this.Transaction;
-        }
-
-        #endregion
-
-        #region Commit
-
-        /// <summary>
-        /// 提交数据库事务
-        /// </summary>
-        public void Commit()
-        {
-            this.Transaction.Commit();
-        }
-
-        #endregion
-
-        #region Rollback
-
-        /// <summary>
-        /// 回滚数据库事务
-        /// </summary>
-        public void Rollback()
-        {
-            this.Transaction.Rollback();
-        }
-
-        #endregion
-
-        #region Open
-
-        /// <summary>
-        /// 打开在线数据库连接
-        /// </summary>
-        public void Open()
-        {
-            this.Connection.Open();
-        }
-
-        #endregion
-
-        #region Close
-
-        /// <summary>
-        /// 关闭在线数据库连接
-        /// </summary>
-        public void Close()
-        {
-            this.Connection.Close();
         }
 
         #endregion

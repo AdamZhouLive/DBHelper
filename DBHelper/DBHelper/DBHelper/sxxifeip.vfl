@@ -71,7 +71,7 @@ namespace DBHelper
         #region GetDataTable
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DataTable对象
+        /// 获取DataTable对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -87,7 +87,6 @@ namespace DBHelper
                 this.CommandOffline = this.ConnectionOffline.CreateCommand();
                 this.CommandOffline.CommandType = CommandType.Text;
                 this.CommandOffline.CommandText = sql;
-                this.CommandOffline.Parameters.Clear();
 
                 this.DataAdapterOffline.SelectCommand = this.CommandOffline;
 
@@ -104,7 +103,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DataTable对象
+        /// 获取DataTable对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -145,7 +144,7 @@ namespace DBHelper
         #region GetDataTableReader
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DataTableReader对象
+        /// 获取DataTableReader对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -159,7 +158,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DataTableReader对象
+        /// 获取DataTableReader对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -178,7 +177,7 @@ namespace DBHelper
         #region GetString
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取String对象
+        /// 获取String对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -197,7 +196,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取String对象
+        /// 获取String对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -221,7 +220,7 @@ namespace DBHelper
         #region GetInt16
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int16对象
+        /// 获取Int16对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -240,7 +239,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int16对象
+        /// 获取Int16对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -264,7 +263,7 @@ namespace DBHelper
         #region GetInt32
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int32对象
+        /// 获取Int32对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -283,7 +282,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int32对象
+        /// 获取Int32对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -307,7 +306,7 @@ namespace DBHelper
         #region GetInt64
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int64对象
+        /// 获取Int64对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -326,7 +325,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Int64对象
+        /// 获取Int64对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -350,7 +349,7 @@ namespace DBHelper
         #region GetBool
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Bool对象
+        /// 获取Bool对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -369,7 +368,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Bool对象
+        /// 获取Bool对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -393,7 +392,7 @@ namespace DBHelper
         #region GetDecimal
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Decimal对象
+        /// 获取Decimal对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -412,7 +411,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Decimal对象
+        /// 获取Decimal对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -436,7 +435,7 @@ namespace DBHelper
         #region GetDouble
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Double对象
+        /// 获取Double对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -455,7 +454,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Double对象
+        /// 获取Double对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -479,7 +478,7 @@ namespace DBHelper
         #region GetFloat
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Float对象
+        /// 获取Float对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -498,7 +497,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        ///使用离线数据库连接器，无需使用Open方法， 获取Float对象
+        /// 获取Float对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -522,7 +521,7 @@ namespace DBHelper
         #region GetChar
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Char对象
+        /// 获取Char对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -541,7 +540,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取Char对象
+        /// 获取Char对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -565,7 +564,7 @@ namespace DBHelper
         #region GetDateTime
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DateTime对象
+        /// 获取DateTime对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
@@ -584,7 +583,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取DateTime对象
+        /// 获取DateTime对象
         /// </summary>
         /// <param name="sql">命令</param>
         /// <param name="Parameters">参数</param>
@@ -608,7 +607,7 @@ namespace DBHelper
         #region ExecuteProcedure
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// 执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程名称</param>
         /// <param name="Parameters">参数</param>
@@ -654,7 +653,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
+        /// 执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程名称</param>
         /// <param name="Parameters">参数</param>
@@ -688,76 +687,19 @@ namespace DBHelper
 
         #region 使用在线连接器的方法
 
-        #region ExecuteReader
+        #region GetDataReader
 
         /// <summary>
         /// 使用在线连接器获取DataReader,使用完毕后记得用Close
         /// </summary>
         /// <param name="sql">命令</param>
         /// <returns></returns>
-        public override void ExecuteReader(string sql)
-        {
-            this.Command.CommandType = CommandType.Text;
-            this.Command.CommandText = sql;
-            this.Command.Parameters.Clear();
-
-            this.DataReader = this.Command.ExecuteReader();
-        }
-
-        /// <summary>
-        /// 使用在线连接器获取DataReader,使用完毕后记得用Close
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public override void ExecuteReader(string sql, Dictionary<string, object> Parameters)
+        public override IDataReader GetDataReader(string sql)
         {
 
-            this.Command.CommandType = CommandType.Text;
-            this.Command.CommandText = sql;
-            this.Command.Parameters.Clear();
-            foreach (string key in Parameters.Keys)
-            {
-                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
-            }
-
-            this.DataReader = this.Command.ExecuteReader();
         }
 
-        #endregion
-
-        #region ExecuteNonQuery
-
-        /// <summary>
-        /// 执行命令并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public override int ExecuteNonQuery(string sql)
-        {
-            this.Command.CommandType = CommandType.Text;
-            this.Command.CommandText = sql;
-            this.Command.Parameters.Clear();
-
-            return this.Command.ExecuteNonQuery();
-        }
-
-        /// <summary>
-        /// 执行命令并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public override int ExecuteNonQuery(string sql, Dictionary<string, object> Parameters)
-        {
-            this.Command.CommandType = CommandType.Text;
-            this.Command.CommandText = sql;
-            this.Command.Parameters.Clear();
-            foreach (string key in Parameters.Keys)
-            {
-                this.Command.Parameters.Add(new System.Data.SqlClient.SqlParameter(key, Parameters[key]));
-            }
-
-            return  this.Command.ExecuteNonQuery();
-        }
+        public abstract IDataReader GetDataReader(string sql, Dictionary<string, object> Parameters);
 
         #endregion
 
