@@ -52,7 +52,7 @@ namespace DBHelper
         public Access(string DataBasePath,string DataBaseFileName)
         {
             string DataBaseFile = DataBasePath + @"\" + DataBaseFileName;
-            string ConnectionText = "provider=microsoft.jet.oledb.12.0;data source='" + DataBaseFile + "'";
+            string ConnectionText = "provider=microsoft.jet.oledb.4.0;data source='" + DataBaseFile + "'";
             this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
@@ -63,6 +63,16 @@ namespace DBHelper
 
         } 
 
+        #endregion
+
+        #region GetDateTimeNow
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取数据库当前时间
+        /// </summary>
+        public override DateTime GetDateTimeNow()
+        {
+            return this.GetDateTime("select now()");
+        }
         #endregion
     }
 }

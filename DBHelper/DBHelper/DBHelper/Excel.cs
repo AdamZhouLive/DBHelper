@@ -64,5 +64,15 @@ namespace DBHelper
         } 
 
         #endregion
+
+        #region GetDateTimeNow
+        /// <summary>
+        /// 使用离线数据库连接器，无需使用Open方法，获取数据库当前时间
+        /// </summary>
+        public override DateTime GetDateTimeNow()
+        {
+            return DateTime.Now;
+        }
+        #endregion
     }
 }

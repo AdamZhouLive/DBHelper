@@ -91,7 +91,7 @@ namespace DBHelper
         {
             get
             {
-                return GetDateTime();
+                return GetDateTimeNow();
             }
            
         }
@@ -254,9 +254,9 @@ namespace DBHelper
         /// 获取数据库当前日期时间
         /// </summary>
         /// <returns>日期时间</returns>
-        private DateTime GetDateTime()
+        private DateTime GetDateTimeNow()
         {
-            return this.databaseaccess.GetDateTime("select getdate()");
+            return this.databaseaccess.GetDateTimeNow();
         } 
         #endregion
 
