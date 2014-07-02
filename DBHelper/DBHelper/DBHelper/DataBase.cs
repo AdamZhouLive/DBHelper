@@ -11,7 +11,7 @@ namespace DBHelper
     public class DataBase
     {
         #region 变量
-        private string connectionText;
+     
         private string server;
         private string databasename;
         private string userid;
@@ -27,7 +27,7 @@ namespace DBHelper
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        public string ConnectionText { get { return connectionText; } }
+        public string ConnectionText { get { return this.databaseaccess.ConnectionText; } }
         #endregion
 
         #region string Server 数据库服务器
@@ -164,7 +164,6 @@ namespace DBHelper
         /// </summary>
         public DataBase()
         {
-            this.connectionText = string.Empty;
             this.DataBaseType = string.Empty;
             this.Server = string.Empty;
             this.DataBaseName = string.Empty;
@@ -185,7 +184,7 @@ namespace DBHelper
         /// <param name="DataBaseFile">数据库文件</param>
         public DataBase(string DataBaseType, string Server, string DataBaseName, string UserId, string Password, string DataBaseFile)
         {
-            this.connectionText = string.Empty;
+
             this.DataBaseType = DataBaseType;
             this.Server = Server;
             this.DataBaseName = DataBaseName;
@@ -208,41 +207,42 @@ namespace DBHelper
         /// </summary>
         private void UpdateDataBaseAccessInfo()
         {
+            string conStr = string.Empty;
             switch (databasetype)
             {
                 case "sqlserver":
-                    connectionText = "server=" + server + @";database=" + databasename + @";user id=" + userid + @";pwd=" + password + ";";
-                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    conStr = "server=" + server + @";database=" + databasename + @";user id=" + userid + @";pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(conStr))
                     {
-                        this.databaseaccess = new SqlServer(this.ConnectionText);
+                        this.databaseaccess = new SqlServer(conStr);
                     }
                     break;
                 case "access":
-                    connectionText = "provider=microsoft.jet.oledb.4.0;data source='" + databasefile + "'";
-                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    conStr = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + databasefile + "'";
+                    if (!string.IsNullOrWhiteSpace(conStr))
                     {
-                        this.databaseaccess = new Access(this.ConnectionText);
+                        this.databaseaccess = new Access(conStr);
                     }
                     break;
                 case "mysql":
-                    connectionText = "server=" + server + @";database=" + databasename + @";uid=" + userid + @";pwd=" + password + ";";
-                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    conStr = "server=" + server + @";database=" + databasename + @";uid=" + userid + @";pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(conStr))
                     {
-                        this.databaseaccess =new MySQL(this.ConnectionText);
+                        this.databaseaccess = new MySQL(conStr);
                     }
                     break;
                 case "excel":
-                    connectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
-                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    conStr = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
+                    if (!string.IsNullOrWhiteSpace(conStr))
                     {
-                        this.databaseaccess = new Excel(this.ConnectionText);
+                        this.databaseaccess = new Excel(conStr);
                     }
                     break;
                 case "oracle":
-                    connectionText = "Driver={Microsoft ODBC for Oracle};Server=" + server + ";Uid=" + userid + ";Pwd=" + password + ";";
-                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                    conStr = "Driver={Microsoft ODBC for Oracle};Server=" + server + ";Uid=" + userid + ";Pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(conStr))
                     {
-                        this.databaseaccess = new Oracle(this.ConnectionText);
+                        this.databaseaccess = new Oracle(conStr);
                     }
                     break;
             }

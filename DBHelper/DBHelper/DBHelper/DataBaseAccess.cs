@@ -13,6 +13,7 @@ namespace DBHelper
     public abstract class DataBaseAccess
     {
         #region 变量
+        private string connectiontext;
         private IDbCommand command;
         private IDbDataAdapter dataadapter;
         private IDbConnection connection;
@@ -24,6 +25,24 @@ namespace DBHelper
         #endregion
 
         #region 属性
+
+        #region string ConnectionText 数据库连接字符串
+        /// <summary>
+        /// 数据库连接字符串
+        /// </summary>
+        public string ConnectionText
+        {
+            get
+            {
+                return connectiontext;
+            }
+            set
+            {
+                connectiontext = value;
+            }
+
+        }
+        #endregion
 
         #region System.Data.ConnectionState State 数据库连接状态
         /// <summary>
@@ -211,6 +230,7 @@ namespace DBHelper
             {
                 this.ConnectionOffline.Close();
             }
+
             return ret;
         }
 
@@ -223,6 +243,7 @@ namespace DBHelper
         public virtual object GetScalar(string sql, Dictionary<string, object> Parameters)
         {
             object ret = new object();
+  
             try
             {
 
@@ -957,7 +978,7 @@ namespace DBHelper
         #region GetDateTimeNow
 
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取数据库当前时间
+        /// 获取数据库当前时间
         /// </summary>
         public abstract DateTime GetDateTimeNow();
         #endregion
@@ -1229,7 +1250,7 @@ namespace DBHelper
         /// </summary>
         public void BeginTransaction()
         {
-            this.Transaction = this.connection.BeginTransaction();
+            this.Transaction = this.Connection.BeginTransaction();
             this.Command.Transaction = this.Transaction;
         }
 
@@ -1279,10 +1300,13 @@ namespace DBHelper
         public void Close()
         {
             this.Connection.Close();
+
         }
 
         #endregion
 
         #endregion
+
+        
     }
 }

@@ -39,7 +39,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
             this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
             this.DataReader = null;
         }

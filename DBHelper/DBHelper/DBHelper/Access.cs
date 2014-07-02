@@ -39,7 +39,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
             this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
             this.DataReader = null;
         }
@@ -52,12 +52,12 @@ namespace DBHelper
         public Access(string DataBasePath,string DataBaseFileName)
         {
             string DataBaseFile = DataBasePath + @"\" + DataBaseFileName;
-            string ConnectionText = "provider=microsoft.jet.oledb.4.0;data source='" + DataBaseFile + "'";
+            string ConnectionText = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + DataBaseFile + "'";
             this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
             this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
             this.DataReader = null;
 

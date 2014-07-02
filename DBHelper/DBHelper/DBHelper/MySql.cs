@@ -37,7 +37,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.ConnectionOffline = new MySql.Data.MySqlClient.MySqlConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.DataReader = null;
         }
@@ -56,7 +56,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.ConnectionOffline = new MySql.Data.MySqlClient.MySqlConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.DataReader = null;
 

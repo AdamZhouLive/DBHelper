@@ -39,7 +39,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
             this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
         }
@@ -57,7 +57,7 @@ namespace DBHelper
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
             this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
 

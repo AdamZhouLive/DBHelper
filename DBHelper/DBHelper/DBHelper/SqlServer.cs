@@ -35,11 +35,12 @@ namespace DBHelper
         /// <param name="ConnectionText">连接字符串</param>
         public SqlServer(string ConnectionText)
         {
+            this.ConnectionText = ConnectionText;
             this.Connection = new System.Data.SqlClient.SqlConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.SqlClient.SqlDataAdapter();
             this.ConnectionOffline = new System.Data.SqlClient.SqlConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.SqlClient.SqlDataAdapter();
             this.DataReader = null;
         }
@@ -53,12 +54,12 @@ namespace DBHelper
         /// <param name="Password">用户密码</param>
         public SqlServer(string Server, string DataBaseName, string UserId, string Password)
         {
-            string ConnectionText = "server=" + Server + @";database=" + DataBaseName + @";user id=" + UserId + @";pwd=" + Password + ";";
+            this.ConnectionText = "server=" + Server + @";database=" + DataBaseName + @";user id=" + UserId + @";pwd=" + Password + ";";
             this.Connection = new System.Data.SqlClient.SqlConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.SqlClient.SqlDataAdapter();
             this.ConnectionOffline = new System.Data.SqlClient.SqlConnection(ConnectionText);
-            this.CommandOffline = this.Connection.CreateCommand();
+            this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.SqlClient.SqlDataAdapter();
             this.DataReader = null;
 
@@ -68,11 +69,22 @@ namespace DBHelper
 
         #region GetDateTimeNow
         /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取数据库当前时间
+        /// 获取数据库当前时间
         /// </summary>
         public override DateTime GetDateTimeNow()
         {
-            return this.GetDateTime("select getdate()");
+            DateTime ret = DateTime.Now;
+            using(System.Data.SqlClient.SqlConnection con=new System.Data.SqlClient.SqlConnection(this.ConnectionText))
+            {
+                using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("select getdate()",con))
+                {
+                    con.Open();
+                    ret = Convert.ToDateTime(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+
+            return ret;
         }
         #endregion
     }
