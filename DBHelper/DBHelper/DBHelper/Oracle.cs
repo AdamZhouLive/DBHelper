@@ -35,6 +35,7 @@ namespace DBHelper
         /// <param name="ConnectionText">连接字符串</param>
         public Oracle(string ConnectionText)
         {
+            this.ConnectionText = ConnectionText;
             this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
@@ -52,7 +53,7 @@ namespace DBHelper
         /// <param name="Password">用户密码</param>
         public Oracle(string Server, string UserId,string Password)
         {
-            string ConnectionText =  "Driver={Microsoft ODBC for Oracle};Server=" + Server + ";Uid=" + UserId + ";Pwd=" + Password + ";";
+            ConnectionText =  "Driver={Microsoft ODBC for Oracle};Server=" + Server + ";Uid=" + UserId + ";Pwd=" + Password + ";";
             this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
@@ -71,7 +72,18 @@ namespace DBHelper
         /// </summary>
         public override DateTime GetDateTimeNow()
         {
-            return this.GetDateTime("select sysdate()");
+            DateTime ret = DateTime.Now;
+            using (System.Data.Odbc.OdbcConnection con = new System.Data.Odbc.OdbcConnection(this.ConnectionText))
+            {
+                using (System.Data.Odbc.OdbcCommand cmd = new System.Data.Odbc.OdbcCommand("select sysdate()", con))
+                {
+                    con.Open();
+                    ret = Convert.ToDateTime(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+
+            return ret;
         }
         #endregion
     }

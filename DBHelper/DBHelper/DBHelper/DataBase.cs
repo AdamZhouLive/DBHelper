@@ -218,7 +218,8 @@ namespace DBHelper
                     }
                     break;
                 case "access":
-                    conStr = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + databasefile + "'";
+                    conStr = "Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + databasefile;
+                    //conStr = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + databasefile + "'";
                     if (!string.IsNullOrWhiteSpace(conStr))
                     {
                         this.databaseaccess = new Access(conStr);
@@ -232,7 +233,7 @@ namespace DBHelper
                     }
                     break;
                 case "excel":
-                    conStr = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
+                    conStr = "Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile;
                     if (!string.IsNullOrWhiteSpace(conStr))
                     {
                         this.databaseaccess = new Excel(conStr);

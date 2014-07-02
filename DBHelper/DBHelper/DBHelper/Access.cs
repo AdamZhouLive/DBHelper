@@ -35,12 +35,13 @@ namespace DBHelper
         /// <param name="ConnectionText">连接字符串</param>
         public Access(string ConnectionText)
         {
-            this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.ConnectionText = ConnectionText;
+            this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
-            this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
-            this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
+            this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
-            this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
+            this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
         }
 
@@ -52,13 +53,13 @@ namespace DBHelper
         public Access(string DataBasePath,string DataBaseFileName)
         {
             string DataBaseFile = DataBasePath + @"\" + DataBaseFileName;
-            string ConnectionText = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + DataBaseFile + "'";
-            this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            ConnectionText = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + DataBaseFile + "'";
+            this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
-            this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
-            this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
+            this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
-            this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
+            this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
 
         } 
@@ -71,7 +72,18 @@ namespace DBHelper
         /// </summary>
         public override DateTime GetDateTimeNow()
         {
-            return this.GetDateTime("select now()");
+            DateTime ret = DateTime.Now;
+            using (System.Data.Odbc.OdbcConnection con = new System.Data.Odbc.OdbcConnection(this.ConnectionText))
+            {
+                using (System.Data.Odbc.OdbcCommand cmd = new System.Data.Odbc.OdbcCommand("select now()", con))
+                {
+                    con.Open();
+                    ret = Convert.ToDateTime(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+
+            return ret;
         }
         #endregion
     }

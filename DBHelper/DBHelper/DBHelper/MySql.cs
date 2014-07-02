@@ -33,6 +33,7 @@ namespace DBHelper
         /// <param name="ConnectionText">连接字符串</param>
         public MySQL(string ConnectionText)
         {
+            this.ConnectionText = ConnectionText;
             this.Connection = new MySql.Data.MySqlClient.MySqlConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter();
@@ -51,7 +52,7 @@ namespace DBHelper
         /// <param name="Password">用户密码</param>
         public MySQL(string Server, string DataBaseName, string UserId, string Password)
         {
-            string ConnectionText = "server=" + Server + @";database=" + DataBaseName + @";uid=" + UserId + @";pwd=" + Password + ";";
+            ConnectionText = "server=" + Server + @";database=" + DataBaseName + @";uid=" + UserId + @";pwd=" + Password + ";";
             this.Connection = new MySql.Data.MySqlClient.MySqlConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
             this.DataAdapter = new MySql.Data.MySqlClient.MySqlDataAdapter();
@@ -70,7 +71,18 @@ namespace DBHelper
         /// </summary>
         public override DateTime GetDateTimeNow()
         {
-            return this.GetDateTime("select now()");
+            DateTime ret = DateTime.Now;
+            using (MySql.Data.MySqlClient.MySqlConnection con =new MySql.Data.MySqlClient.MySqlConnection(this.ConnectionText))
+            {
+                using (MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand("select now()", con))
+                {
+                    con.Open();
+                    ret = Convert.ToDateTime(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+
+            return ret;
         }
         #endregion
 

@@ -35,12 +35,13 @@ namespace DBHelper
         /// <param name="ConnectionText">连接字符串</param>
         public Excel(string ConnectionText)
         {
-            this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.ConnectionText = ConnectionText;
+            this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
-            this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
-            this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
+            this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
-            this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
+            this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
         }
 
@@ -52,13 +53,13 @@ namespace DBHelper
         public Excel(string DataBasePath, string DataBaseFileName)
         {
             string DataBaseFile = DataBasePath + @"\" + DataBaseFileName;
-            string ConnectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + DataBaseFile + ";";
-            this.Connection = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            ConnectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + DataBaseFile + ";";
+            this.Connection = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.Command = this.Connection.CreateCommand();
-            this.DataAdapter = new System.Data.OleDb.OleDbDataAdapter();
-            this.ConnectionOffline = new System.Data.OleDb.OleDbConnection(ConnectionText);
+            this.DataAdapter = new System.Data.Odbc.OdbcDataAdapter();
+            this.ConnectionOffline = new System.Data.Odbc.OdbcConnection(ConnectionText);
             this.CommandOffline = this.Connection.CreateCommand();
-            this.DataAdapterOffline = new System.Data.OleDb.OleDbDataAdapter();
+            this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
 
         } 
