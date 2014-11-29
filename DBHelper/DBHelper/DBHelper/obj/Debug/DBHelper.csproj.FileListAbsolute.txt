@@ -1,0 +1,6 @@
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Debug\DBHelper.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Debug\DBHelper.pdb
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Debug\mysql.data.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\obj\Debug\DBHelper.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\obj\Debug\DBHelper.pdb
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\obj\Debug\DBHelper.csprojResolveAssemblyReference.cache

@@ -25,6 +25,7 @@ namespace DBHelper
             this.CommandOffline = null;
             this.DataAdapterOffline = null;
             this.DataReader = null;
+            this.DBType = "MySql";
         }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace DBHelper
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.DataReader = null;
+            this.DBType = "MySql";
         }
 
         /// <summary>
@@ -60,6 +62,7 @@ namespace DBHelper
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new MySql.Data.MySqlClient.MySqlDataAdapter();
             this.DataReader = null;
+            this.DBType = "MySql";
 
         } 
 

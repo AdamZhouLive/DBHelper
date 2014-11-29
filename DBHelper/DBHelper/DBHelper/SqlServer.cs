@@ -27,6 +27,7 @@ namespace DBHelper
             this.CommandOffline = null;
             this.DataAdapterOffline = null;
             this.DataReader = null;
+            this.DBType = "SqlServer";
         }
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace DBHelper
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.SqlClient.SqlDataAdapter();
             this.DataReader = null;
+            this.DBType = "SqlServer";
         }
 
         /// <summary>
@@ -62,6 +64,7 @@ namespace DBHelper
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.SqlClient.SqlDataAdapter();
             this.DataReader = null;
+            this.DBType = "SqlServer";
 
         } 
 

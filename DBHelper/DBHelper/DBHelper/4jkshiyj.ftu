@@ -11,14 +11,13 @@ namespace DBHelper
     public class DataBase
     {
         #region 变量
-     
+        private string connectionText;
         private string server;
         private string databasename;
         private string userid;
         private string password;
         private string databasefile;
         private string databasetype;
-        private string connectiontext;
         private DataBaseAccess databaseaccess;
         #endregion
 
@@ -28,7 +27,7 @@ namespace DBHelper
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        public string ConnectionText { get { return connectiontext; } set { connectiontext = value; UpdateDataBaseAccessInfo(); } }
+        public string ConnectionText { get { return connectionText; } }
         #endregion
 
         #region string Server 数据库服务器
@@ -92,7 +91,7 @@ namespace DBHelper
         {
             get
             {
-                return GetDateTimeNow();
+                return GetDateTime();
             }
            
         }
@@ -165,6 +164,7 @@ namespace DBHelper
         /// </summary>
         public DataBase()
         {
+            this.connectionText = string.Empty;
             this.DataBaseType = string.Empty;
             this.Server = string.Empty;
             this.DataBaseName = string.Empty;
@@ -185,30 +185,13 @@ namespace DBHelper
         /// <param name="DataBaseFile">数据库文件</param>
         public DataBase(string DataBaseType, string Server, string DataBaseName, string UserId, string Password, string DataBaseFile)
         {
-
+            this.connectionText = string.Empty;
             this.DataBaseType = DataBaseType;
             this.Server = Server;
             this.DataBaseName = DataBaseName;
             this.UserId = UserId;
             this.Password = Password;
             this.DataBaseFile = DataBaseFile;
-            this.databaseaccess = null;
-
-            this.UpdateDataBaseAccessInfo();
-
-        }
-
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="DataBaseType">数据库类型</param>
-        /// <param name="ConStr">数据库连接</param>
-        public DataBase(string DataBaseType,string ConStr)
-        {
-
-            this.DataBaseType = DataBaseType;
-            this.ConnectionText = ConStr;
             this.databaseaccess = null;
 
             this.UpdateDataBaseAccessInfo();
@@ -228,93 +211,43 @@ namespace DBHelper
             switch (databasetype)
             {
                 case "sqlserver":
-                    if (!string.IsNullOrEmpty(server))
+                    connectionText = "server=" + server + @";database=" + databasename + @";user id=" + userid + @";pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
                     {
-                        connectiontext = "server=" + server + @";database=" + databasename + @";user id=" + userid + @";pwd=" + password + ";";
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new SqlServer(connectiontext);
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new SqlServer(connectiontext);
-                        }
+                        this.databaseaccess = new SqlServer(this.ConnectionText);
                     }
                     break;
                 case "access":
-                    if (!string.IsNullOrWhiteSpace(databasefile))
+                    connectionText = "provider=microsoft.jet.oledb.12.0;data source='" + databasefile + "'";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
                     {
-                        //conStr = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + databasefile;
-                        connectiontext = "Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + databasefile;
-                        //conStr = "Provider=Microsoft.ACE.OLEDB.12.0;data source='" + databasefile + "'";
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Access(connectiontext);
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Access(connectiontext);
-                        }
+                        this.databaseaccess = new Access(this.ConnectionText);
                     }
                     break;
                 case "mysql":
-                    if (!string.IsNullOrWhiteSpace(server))
+                    connectionText = "server=" + server + @";database=" + databasename + @";uid=" + userid + @";pwd=" + password + ";";
+                    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
                     {
-                        connectiontext = "server=" + server + @";database=" + databasename + @";uid=" + userid + @";pwd=" + password + ";";
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new MySQL(connectiontext);
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new MySQL(connectiontext);
-                        }
-                    }
-                    
-                    break;
-                case "excel":
-                    if (!string.IsNullOrWhiteSpace(databasefile))
-                    {
-                        connectiontext = "Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile;
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Excel(connectiontext);
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Excel(connectiontext);
-                        }
+                        this.databaseaccess =new MySQL(this.ConnectionText);
                     }
                     break;
-                case "oracle":
-                    if (!string.IsNullOrWhiteSpace(server))
-                    {
-                        connectiontext = "Driver={Microsoft ODBC for Oracle};Server=" + server + ";Uid=" + userid + ";Pwd=" + password + ";";
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Oracle(connectiontext);
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(connectiontext))
-                        {
-                            this.databaseaccess = new Oracle(connectiontext);
-                        }
-                    }
-                    break;
+                //case "excel":
+                //    connectionText = "Provider=Microsoft.ACE.OLEDB.12.0;Driver={Microsoft Excel Driver (*.xls, *.xlsx, *.xlsm, *.xlsb)};DBQ=" + databasefile + ";";
+                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                //    {
+                //        this.connection = new System.Data.OleDb.OleDbConnection(this.ConnectionText);
+                //        this.dataadapter = new System.Data.OleDb.OleDbDataAdapter();
+                      
+                //    }
+                //    break;
+                //case "oracle":
+                //    connectionText = "Driver={Microsoft ODBC for Oracle};Server="+server+";Uid="+userid+";Pwd="+password+";";
+                //    if (!string.IsNullOrWhiteSpace(this.ConnectionText))
+                //    {
+                //        this.connection = new System.Data.Odbc.OdbcConnection(this.ConnectionText);
+                //        this.dataadapter = new System.Data.Odbc.OdbcDataAdapter();
+                //    }
+                //    break;
             }
         }
         #endregion     
@@ -324,42 +257,15 @@ namespace DBHelper
         /// 获取数据库当前日期时间
         /// </summary>
         /// <returns>日期时间</returns>
-        private DateTime GetDateTimeNow()
+        private DateTime GetDateTime()
         {
-            return this.databaseaccess.GetDateTimeNow();
+            return this.databaseaccess.GetDateTime("select getdate()");
         } 
         #endregion
 
         #endregion
 
         #region 公开方法
-
-        #region 离线数据库连接器方法
-
-        #region GetScalar
-
-        /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public virtual object GetScalar(string sql)
-        {
-            return this.databaseaccess.GetScalar(sql);
-        }
-
-        /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，获取第一行第一列对象
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        /// <returns></returns>
-        public virtual object GetScalar(string sql, Dictionary<string, object> Parameters)
-        {
-            return this.databaseaccess.GetScalar(sql, Parameters);
-        }
-
-        #endregion
 
         #region GetDataTable
 
@@ -385,7 +291,7 @@ namespace DBHelper
             return this.databaseaccess.GetDataTable(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetDataTableReader
 
@@ -411,7 +317,7 @@ namespace DBHelper
             return this.databaseaccess.GetDataTableReader(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetString
 
@@ -437,7 +343,7 @@ namespace DBHelper
             return this.databaseaccess.GetString(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetInt16
 
@@ -463,7 +369,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt16(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetInt32
 
@@ -489,7 +395,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt32(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetInt64
 
@@ -515,7 +421,7 @@ namespace DBHelper
             return this.databaseaccess.GetInt64(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetBool
 
@@ -541,8 +447,8 @@ namespace DBHelper
             return this.databaseaccess.GetBool(sql, Parameters);
         }
 
-        #endregion
-
+        #endregion 
+       
         #region GetDecimal
 
         /// <summary>
@@ -567,7 +473,7 @@ namespace DBHelper
             return this.databaseaccess.GetDecimal(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetDouble
 
@@ -593,7 +499,7 @@ namespace DBHelper
             return this.databaseaccess.GetDouble(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetFloat
 
@@ -619,7 +525,7 @@ namespace DBHelper
             return this.databaseaccess.GetFloat(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetChar
 
@@ -645,7 +551,7 @@ namespace DBHelper
             return this.databaseaccess.GetChar(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region GetDateTime
 
@@ -671,31 +577,7 @@ namespace DBHelper
             return this.databaseaccess.GetDateTime(sql, Parameters);
         }
 
-        #endregion
-
-        #region ExecuteNonQueryOffline
-
-        /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public int ExecuteNonQueryOffline(string sql)
-        {
-            return this.databaseaccess.ExecuteNonQueryOffline(sql);
-        }
-
-        /// <summary>
-        /// 使用离线数据库连接器，无需使用Open方法，执行SQL并返回影响行数
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        public int ExecuteNonQueryOffline(string sql, Dictionary<string, object> Parameters)
-        {
-            return this.databaseaccess.ExecuteNonQueryOffline(sql, Parameters);
-        }
-
-        #endregion
+        #endregion 
 
         #region ExecuteProcedureOffline
 
@@ -720,7 +602,7 @@ namespace DBHelper
             return this.databaseaccess.ExecuteProcedureOfflineToDataTable(ProcedureName);
         }
 
-        #endregion
+        #endregion 
 
         #region AddProcedureParameterOffline
 
@@ -748,36 +630,6 @@ namespace DBHelper
             this.databaseaccess.ProcedureParameterInitializeOffline();
         }
 
-        #endregion 
-
-        #endregion
-
-        #region 在线数据库连接器方法
-
-        #region ExecuteScalar
-
-        /// <summary>
-        /// 获取第一行第一列对象
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <returns></returns>
-        public object ExecuteScalar(string sql)
-        {
-
-            return this.databaseaccess.ExecuteScalar(sql);
-        }
-
-        /// <summary>
-        /// 获取第一行第一列对象
-        /// </summary>
-        /// <param name="sql">命令</param>
-        /// <param name="Parameters">参数</param>
-        /// <returns></returns>
-        public object ExecuteScalar(string sql, Dictionary<string, object> Parameters)
-        {
-            return this.databaseaccess.ExecuteScalar(sql, Parameters);
-        }
-
         #endregion
 
         #region ExecuteReader
@@ -802,7 +654,7 @@ namespace DBHelper
             this.databaseaccess.ExecuteReader(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region ExecuteNonQuery
 
@@ -826,12 +678,12 @@ namespace DBHelper
             return this.databaseaccess.ExecuteNonQuery(sql, Parameters);
         }
 
-        #endregion
+        #endregion 
 
         #region ExecuteProcedure
 
         /// <summary>
-        /// 执行存储过程
+        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程名称</param>
         /// <returns>输出参数</returns>
@@ -841,7 +693,7 @@ namespace DBHelper
         }
 
         /// <summary>
-        /// 执行存储过程
+        /// 使用离线数据库连接器，无需使用Open方法，执行存储过程
         /// </summary>
         /// <param name="ProcedureName">存储过程</param>
         /// <returns>DataTable</returns>
@@ -938,8 +790,6 @@ namespace DBHelper
         {
             this.databaseaccess.Close();
         }
-
-        #endregion 
 
         #endregion
 

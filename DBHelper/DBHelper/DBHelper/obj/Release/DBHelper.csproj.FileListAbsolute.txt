@@ -1,0 +1,5 @@
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Release\DBHelper.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Release\DBHelper.pdb
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\bin\Release\mysql.data.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\obj\Release\DBHelper.dll
+D:\AdamZhou\GitHub\DBHelper\DBHelper\DBHelper\DBHelper\obj\Release\DBHelper.pdb

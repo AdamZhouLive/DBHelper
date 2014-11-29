@@ -27,6 +27,7 @@ namespace DBHelper
             this.CommandOffline = null;
             this.DataAdapterOffline = null;
             this.DataReader = null;
+            this.DBType = "Excel";
         }
 
         /// <summary>
@@ -43,6 +44,7 @@ namespace DBHelper
             this.CommandOffline = this.ConnectionOffline.CreateCommand();
             this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
+            this.DBType = "Excel";
         }
 
         /// <summary>
@@ -61,6 +63,7 @@ namespace DBHelper
             this.CommandOffline = this.Connection.CreateCommand();
             this.DataAdapterOffline = new System.Data.Odbc.OdbcDataAdapter();
             this.DataReader = null;
+            this.DBType = "Excel";
 
         } 
 
